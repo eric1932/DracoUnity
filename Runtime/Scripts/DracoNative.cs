@@ -533,11 +533,17 @@ namespace Draco {
             if (!isPointCloud) {
                 mesh.SetIndexBufferParams(dracoMesh->numFaces*3, dracoMesh->indexFormat);
             }
-            var vertexParams = new List<VertexAttributeDescriptor>(attributes.Count);
-            foreach (var map in attributes) {
-                vertexParams.Add(map.GetVertexAttributeDescriptor());
-            }
-            mesh.SetVertexBufferParams(dracoMesh->numVertices, vertexParams.ToArray());
+            // var vertexParams = new List<VertexAttributeDescriptor>(attributes.Count);
+            // foreach (var map in attributes) {
+            //     vertexParams.Add(map.GetVertexAttributeDescriptor());
+            // }
+            // mesh.SetVertexBufferParams(dracoMesh->numVertices, vertexParams.ToArray());
+            var layout = new[]
+            {
+                new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, 3),
+                new VertexAttributeDescriptor(VertexAttribute.Color, VertexAttributeFormat.UNorm8, 4, 1),
+            };
+            mesh.SetVertexBufferParams(dracoMesh->numVertices, layout);
 #if !DRACO_MESH_DATA
             AllocateIndices(dracoMesh);
             AllocateVertexBuffers(dracoMesh);
